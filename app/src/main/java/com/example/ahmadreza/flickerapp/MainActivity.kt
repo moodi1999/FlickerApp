@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() , GetFlickJsonData.OnDataAvailable{
 
     override fun onResume() {
         super.onResume()
-        GetFlickJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", true, "en-us").executeOnSameThread("android, nought")
+        GetFlickJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", true, "en-us").executeOnSameThread("android")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

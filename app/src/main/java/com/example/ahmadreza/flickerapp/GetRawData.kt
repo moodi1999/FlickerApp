@@ -48,6 +48,7 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
             }
 
             mDownloadStatus = DownloadStatus.OK
+            println(result.toString())
             return result.toString()
 
         }catch (e: MalformedURLException){

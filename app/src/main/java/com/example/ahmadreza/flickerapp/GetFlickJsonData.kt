@@ -26,20 +26,22 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
             try {
                 val jasondata = JSONObject(data)
                 val itemsArray = jasondata.getJSONArray("items")
-
+                println("itemsArray.length() = ${itemsArray.length()}")
                 for (i in (0 until itemsArray.length())){
                     val jsonPhoto = itemsArray.getJSONObject(i)
                     val title = jsonPhoto.getString("title")
                     val author = jsonPhoto.getString("author")
                     val authorId = jsonPhoto.getString("author_id")
                     val tags = jsonPhoto.getString("tags")
-
                     val jsonmedia = jsonPhoto.getJSONObject("media")
                     val photourl = jsonmedia.getString("m")
                     var link = photourl.replace("_m.", "_b.")
 
                     val photoObj = Photo(title, author, authorId, link, tags, photourl)
                     mphoto!!.add(photoObj)
+
+                    println(title)
+                    println("link = ${link}")
 
                     println("GetFlickJsonData.onDownloadCom::::: done")
                 }
@@ -65,12 +67,18 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
     private fun creatUri(searchCriteria: String, Language: String, MatchAll: Boolean): String? {
 
-        return Uri.parse(mBaseUrl).buildUpon()
+        var uri = Uri.parse(mBaseUrl).buildUpon()
                 .appendQueryParameter("tags", searchCriteria)
                 .appendQueryParameter("tagmode", if(MatchAll) "ALL" else "ANY")
                 .appendQueryParameter("lang", Language)
                 .appendQueryParameter("nojsoncallback", "1")
+                .appendQueryParameter("format", "json")
                 .build().toString()
+        println("uri = ${uri}")
+
+        return uri
+
+        //return "https://api.flickr.com/services/feeds/photos_public.gne?tags=android&format=json"
 
     }
 
