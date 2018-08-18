@@ -17,7 +17,15 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
         fun onDownloadCom(data: String, status: DownloadStatus)
     }
 
+    fun runInSameThread(s: String) {
+        println("GetRawData.runInSameThread Start")
+        onPostExecute(doInBackground(s))
+        println("GetRawData.runInSameThread End")
+    }
+
     override fun doInBackground(vararg params: String?): String {
+
+        println("GetRawData.doInBackground Start")
 
         var connection: HttpURLConnection? = null
         var result: StringBuilder? = null
@@ -48,7 +56,6 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
             }
 
             mDownloadStatus = DownloadStatus.OK
-            println(result.toString())
             return result.toString()
 
         }catch (e: MalformedURLException){
@@ -59,6 +66,7 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
             println("GetRawData.doInBackground: SecuEx ${e.message}")
         }
         finally {
+            println("GetRawData.doInBackground End")
             if (connection != null){
                 connection.disconnect()
             }
@@ -76,9 +84,11 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
     }
 
     override fun onPostExecute(result: String?) {
-        println("GetRawData.onPostExecute")
+        println("GetRawData.onPostExecute Start")
         if (mcallback != null){
             mcallback.onDownloadCom(result!!, mDownloadStatus)
         }
+
+        println("GetRawData.onPostExecute End")
     }
 }

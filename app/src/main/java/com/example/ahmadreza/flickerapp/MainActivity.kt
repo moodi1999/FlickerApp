@@ -11,25 +11,29 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() , GetFlickJsonData.OnDataAvailable{
 
     override fun onDataAvailable(data: ArrayList<Photo>, status: DownloadStatus) {
+        println("MainActivity.onDataAvailable Start")
         if (status == DownloadStatus.OK){
             println(data)
         }
         else{
             println(status)
         }
+        println("MainActivity.onDataAvailable End")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        println("MainActivity.onCreate")
         /*GetRawData().execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android&format=json&nojsoncallback=1")*/
     }
 
     override fun onResume() {
         super.onResume()
-        GetFlickJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", true, "en-us").executeOnSameThread("android")
+        println("MainActivity.onResume start")
+        GetFlickJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", true, "en-us").execute("android")
+        println("MainActivity.onResume End")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
