@@ -17,7 +17,10 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
     override fun onDownloadCom(data: String, status: DownloadStatus) {
 
+        var st: DownloadStatus? = null
+
         if (status == DownloadStatus.OK){
+            st = DownloadStatus.OK
             mphoto = ArrayList()
 
             try {
@@ -43,8 +46,13 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
             }
             catch (e: JSONException){
                 e.printStackTrace()
-                status = DownloadStatus.FAILED_OR_EMPTY
+                st = DownloadStatus.FAILED_OR_EMPTY
             }
+        }
+
+        if (mcallback != null){
+            // now inform the caller that processing is done
+            mcallback.onDataAvailable(mphoto!!, st!!)
         }
     }
 

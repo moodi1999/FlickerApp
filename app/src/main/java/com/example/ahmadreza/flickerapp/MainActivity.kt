@@ -8,13 +8,14 @@ import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() , GetRawData.OnDownloadCom {
+class MainActivity : AppCompatActivity() , GetFlickJsonData.OnDataAvailable{
 
-    override fun onDownloadCom(data: String, status: DownloadStatus) {
+    override fun onDataAvailable(data: ArrayList<Photo>, status: DownloadStatus) {
         if (status == DownloadStatus.OK){
-            println("downcom and res = ${data}")
-        }else{
-            println("downnotcom whith this shit = ${status}")
+            println(data)
+        }
+        else{
+            println(status)
         }
     }
 
@@ -23,7 +24,12 @@ class MainActivity : AppCompatActivity() , GetRawData.OnDownloadCom {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        GetRawData(this).execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android&format=json&nojsoncallback=1")
+        /*GetRawData().execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android&format=json&nojsoncallback=1")*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GetFlickJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", true, "en-us").executeOnSameThread("android, nought")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
