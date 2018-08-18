@@ -8,12 +8,13 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
+
 /**
  * Created by ahmadreza on 8/18/18.
  */
 class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStatus = DownloadStatus.IDLE) : AsyncTask<String, Unit, String>() {
 
-    interface OnDownloadCom{
+    interface OnDownloadCom {
         fun onDownloadCom(data: String, status: DownloadStatus)
     }
 
@@ -29,9 +30,9 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
 
         var connection: HttpURLConnection? = null
         var result: StringBuilder? = null
-        var reader:BufferedReader? = null
+        var reader: BufferedReader? = null
 
-        if (params[0] == null){
+        if (params[0] == null) {
             mDownloadStatus = DownloadStatus.NOTINITIALISED
             return "null"
         }
@@ -50,7 +51,7 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
 
             var line = reader.readLine()
 
-            while (null != line){
+            while (null != line) {
                 result.append(line).append("\n")
                 line = reader.readLine()
             }
@@ -58,22 +59,21 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
             mDownloadStatus = DownloadStatus.OK
             return result.toString()
 
-        }catch (e: MalformedURLException){
+        } catch (e: MalformedURLException) {
             println("GetRawData.doInBackground: MalfEx ${e.message}")
-        }catch (e: IOException){
+        } catch (e: IOException) {
             println("GetRawData.doInBackground: IOEx ${e.message}")
-        }catch (e: SecurityException){
+        } catch (e: SecurityException) {
             println("GetRawData.doInBackground: SecuEx ${e.message}")
-        }
-        finally {
+        } finally {
             println("GetRawData.doInBackground End")
-            if (connection != null){
+            if (connection != null) {
                 connection.disconnect()
             }
-            if (reader != null){
+            if (reader != null) {
                 try {
                     reader.close()
-                }catch (e: IOException){
+                } catch (e: IOException) {
                     println("IO EX in if")
                 }
             }
@@ -85,7 +85,7 @@ class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStat
 
     override fun onPostExecute(result: String?) {
         println("GetRawData.onPostExecute Start")
-        if (mcallback != null){
+        if (mcallback != null) {
             mcallback.onDownloadCom(result!!, mDownloadStatus)
         }
 

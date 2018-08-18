@@ -12,7 +12,8 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
     var mphoto: ArrayList<Photo>? = null
     var isruninsamethread = false
-    interface OnDataAvailable{
+
+    interface OnDataAvailable {
         fun onDataAvailable(data: ArrayList<Photo>, status: DownloadStatus)
     }
 
@@ -22,14 +23,14 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
         var st: DownloadStatus? = null
 
-        if (status == DownloadStatus.OK){
+        if (status == DownloadStatus.OK) {
             st = DownloadStatus.OK
             mphoto = ArrayList()
 
             try {
                 val jasondata = JSONObject(data)
                 val itemsArray = jasondata.getJSONArray("items")
-                for (i in (0 until itemsArray.length())){
+                for (i in (0 until itemsArray.length())) {
                     val jsonPhoto = itemsArray.getJSONObject(i)
                     val title = jsonPhoto.getString("title")
                     val author = jsonPhoto.getString("author")
@@ -46,14 +47,13 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
                     println("GetFlickJsonData.onDownloadCom::::: done")
                 }
-            }
-            catch (e: JSONException){
+            } catch (e: JSONException) {
                 e.printStackTrace()
                 st = DownloadStatus.FAILED_OR_EMPTY
             }
         }
 
-        if (isruninsamethread && mcallback != null){
+        if (isruninsamethread && mcallback != null) {
             // now inform the caller that processing is done
             mcallback.onDataAvailable(mphoto!!, st!!)
         }
@@ -61,7 +61,7 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
         println("GetFlickJsonData.onDownloadCom End")
     }
 
-    fun executeOnSameThread(searchCriteria: String){
+    fun executeOnSameThread(searchCriteria: String) {
         println("GetFlickJsonData.executeOnSameThread start")
         isruninsamethread = true
         val destinationUri = creatUri(searchCriteria, mLanguage, mMatchAll)
@@ -84,7 +84,7 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
     override fun onPostExecute(result: ArrayList<Photo>?) {
         println("GetFlickJsonData.onPostExecute start")
 
-        if (mcallback != null){
+        if (mcallback != null) {
             mcallback.onDataAvailable(mphoto!!, DownloadStatus.OK)
         }
 
@@ -95,7 +95,7 @@ class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var
 
         return Uri.parse(mBaseUrl).buildUpon()
                 .appendQueryParameter("tags", searchCriteria)
-                .appendQueryParameter("tagmode", if(MatchAll) "ALL" else "ANY")
+                .appendQueryParameter("tagmode", if (MatchAll) "ALL" else "ANY")
                 .appendQueryParameter("lang", Language)
                 .appendQueryParameter("nojsoncallback", "1")
                 .appendQueryParameter("format", "json")

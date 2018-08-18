@@ -1,21 +1,19 @@
 package com.example.ahmadreza.flickerapp
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() , GetFlickJsonData.OnDataAvailable{
+class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable {
 
     override fun onDataAvailable(data: ArrayList<Photo>, status: DownloadStatus) {
         println("MainActivity.onDataAvailable Start")
-        if (status == DownloadStatus.OK){
+        if (status == DownloadStatus.OK) {
             println(data)
-        }
-        else{
+        } else {
             println(status)
         }
         println("MainActivity.onDataAvailable End")
