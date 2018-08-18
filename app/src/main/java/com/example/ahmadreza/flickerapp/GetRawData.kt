@@ -13,8 +13,6 @@ import java.net.URL
  */
 class GetRawData(val mcallback: OnDownloadCom, var mDownloadStatus: DownloadStatus = DownloadStatus.IDLE) : AsyncTask<String, Unit, String>() {
 
-    val tag = "GetRawData"
-
     interface OnDownloadCom{
         fun onDownloadCom(data: String, status: DownloadStatus)
     }
