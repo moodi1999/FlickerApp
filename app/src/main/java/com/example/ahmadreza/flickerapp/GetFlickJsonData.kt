@@ -8,7 +8,7 @@ import org.json.JSONObject
 /**
  * Created by ahmadreza on 8/18/18.
  */
-class GetFlickJsonData(val mcallback: OnDataAvailable, var mBaseUrl: String, var mMatchAll: Boolean, var mLanguage: String) : AsyncTask<String, Unit, ArrayList<Photo>>(), GetRawData.OnDownloadCom {
+class GetFlickJsonData(val mcallback: OnDataAvailable?, var mBaseUrl: String, var mMatchAll: Boolean, var mLanguage: String) : AsyncTask<String, Unit, ArrayList<Photo>>(), GetRawData.OnDownloadCom {
 
     var mphoto: ArrayList<Photo>? = null
     var isruninsamethread = false

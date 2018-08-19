@@ -5,11 +5,21 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable {
+class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable , RecyclerItemClickListener.OnRecyclerClicklistenr {
+
+    override fun onItemLongClick(view: View, position: Int) {
+        println("MainActivity.onItemLongClick")
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        println("MainActivity.onItemClick")
+    }
 
     var adaptor: FlickerRecyclerViewAdaptor? = null
 
@@ -29,6 +39,7 @@ class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable {
         setSupportActionBar(toolbar)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(this, recyclerView, this))
         adaptor = FlickerRecyclerViewAdaptor( ArrayList<Photo>(), this)
         recyclerView.adapter = adaptor
 
