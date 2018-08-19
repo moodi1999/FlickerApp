@@ -2,17 +2,21 @@ package com.example.ahmadreza.flickerapp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable {
+
+    var adaptor: FlickerRecyclerViewAdaptor? = null
 
     override fun onDataAvailable(data: ArrayList<Photo>, status: DownloadStatus) {
         println("MainActivity.onDataAvailable Start")
         if (status == DownloadStatus.OK) {
-            println(data)
+            adaptor!!.loadNewData(data)
         } else {
             println(status)
         }
@@ -23,7 +27,13 @@ class MainActivity : AppCompatActivity(), GetFlickJsonData.OnDataAvailable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adaptor = FlickerRecyclerViewAdaptor( ArrayList<Photo>(), this)
+        recyclerView.adapter = adaptor
+
         println("MainActivity.onCreate")
+
         /*GetRawData().execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android&format=json&nojsoncallback=1")*/
     }
 
